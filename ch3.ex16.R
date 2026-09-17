@@ -62,14 +62,12 @@ ttm <- function(X_tens, U_mat, k_mode) {
    }
    Ybar <- simplify2array(Ybar) # make list into array 
    # ifelse to avoid NA when k is the last mode and k + 1 does not exist
-   reshape_inds_beginning <- dsx[1:(k_mode - 1)]
-   reshape_inds_middle <- dsu[1]
-   reshape_inds_end <- ifelse(k_mode == ndsx, 
-                              c(dsx[1:(k_mode - 1)], dsu[1]),
-                              c(dsx[1:(k_mode - 1)], dsu[1], dsx[(k_mode + 1):ndsx]))
-   Y <- array(Ybar, c(reshape_inds_beginning,
-                      reshape_inds_middle, 
-                      reshape_inds_end ))
+   if (k_mode == ndsx) {
+     reshape_inds <- c(dsx[1:(k_mode - 1)], dsu[1])
+   } else {
+     reshape_inds <- c(dsx[1:(k_mode - 1)], dsu[1], dsx[(k_mode + 1):ndsx])
+   }
+   Y <- array(Ybar, reshape_inds)
   }
   
   return(Y)
